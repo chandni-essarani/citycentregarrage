@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - City Centre Vehicle Garage</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            color: darkslategray;
+            background-color: white;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            font-weight: 700;
+            font-size: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .logo-text span:first-child {
+            color: royalblue;
+        }
+
+        .logo-text span:last-child {
+            color: darkblue;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: darkslategray;
+            font-weight: 600;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: royalblue;
+        }
+
+        nav a.active {
+            color: royalblue;
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: royalblue;
+        }
+
+        .login-btn {
+            background-color: royalblue;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            transition: background-color 0.3s;
+        }
+
+        .login-btn:hover {
+            background-color: darkblue;
+        }
+
+        main {
+            padding: 5rem 10%;
+            background: linear-gradient(135deg, whitesmoke 0%, gainsboro 100%);
+        }
+
+        .contact-info {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .contact-info h2 {
+            font-size: 2rem;
+            color: royalblue;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .contact-info h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: orangered;
+        }
+
+        .contact-details {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .contact-card {
+            flex: 1;
+            min-width: 250px;
+            max-width: 300px;
+            padding: 2rem;
+            background: linear-gradient(135deg, whitesmoke 0%, gainsboro 100%);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border-top: 4px solid royalblue;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-card h3 {
+            font-size: 1.3rem;
+            color: darkblue;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .contact-card p {
+            color: darkslategray;
+            line-height: 1.8;
+        }
+
+        .contact-form {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 3rem;
+        }
+
+        .contact-form h2 {
+            font-size: 2rem;
+            color: royalblue;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .contact-form p {
+            text-align: center;
+            color: dimgray;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: darkslategray;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid lightgray;
+            border-radius: 4px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: orangered;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
+
+        .cta-button:hover {
+            background-color: darkorange;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-confirmation {
+            text-align: center;
+            padding: 2rem;
+            background-color: whitesmoke;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+
+        .contact-confirmation h3 {
+            color: royalblue;
+            margin-bottom: 1rem;
+        }
+
+        footer {
+            background-color: black;
+            color: white;
+            padding: 4rem 10% 2rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section {
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .footer-section h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .footer-section p, 
+        .footer-section a {
+            color: silver;
+            margin-bottom: 0.8rem;
+            display: block;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid gray;
+            color: silver;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+            
+            .logo {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+            
+            .logo img {
+                height: 50px;
+                margin: 0 auto;
+            }
+            
+            .contact-details {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .footer-section {
+                margin-bottom: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="garragelogo.png" alt="City Centre Vehicle Garage Logo">
+            <div class="logo-text">
+                <span>City Centre</span>
+                <span>Vehicle Garage</span>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="quotation.html">Quotes</a></li>
+                <li><a href="booking.html">Book</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+                <li><a href="login.html" class="login-btn">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="contact-info">
+            <h2>Contact Information</h2>
+            <div class="contact-details">
+                <div class="contact-card address">
+                    <h3>Address</h3>
+                    <p>22 Grand Street<br>City Centre<br>B6 4AB</p>
+                </div>
+                <div class="contact-card hours">
+                    <h3>Opening Hours</h3>
+                    <p>Monday - Friday: 9am - 6pm<br>
+                    Saturday: By appointment only<br>
+                    Sunday: Closed</p>
+                </div>
+                <div class="contact-card contact">
+                    <h3>Contact</h3>
+                    <p>07117 345678</p>
+                    <p>citycentregarage@gmail.com</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact-form">
+            <h2>Send Us a Message</h2>
+            <p>Use the form below to contact our team</p>
+            
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="contactName">Full Name:</label>
+                    <input type="text" id="contactName" name="contactName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contactEmail">Email Address:</label>
+                    <input type="email" id="contactEmail" name="contactEmail" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contactPhone">Phone Number:</label>
+                    <input type="tel" id="contactPhone" name="contactPhone">
+                </div>
+                
+                <div class="form-group">
+                    <label for="contactSubject">Subject:</label>
+                    <select id="contactSubject" name="contactSubject" required>
+                        <option value="">Select Subject</option>
+                        <option value="General Inquiry">General Inquiry</option>
+                        <option value="Service Question">Service Question</option>
+                        <option value="Booking Issue">Booking Issue</option>
+                        <option value="Feedback">Feedback</option>
+                        <option value="Complaint">Complaint</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contactMessage">Message:</label>
+                    <textarea id="contactMessage" name="contactMessage" rows="6" required></textarea>
+                </div>
+                
+                <button type="submit" class="cta-button">Send Message</button>
+            </form>
+            
+            <div id="contactConfirmation" class="contact-confirmation" style="display: none;">
+                <h3>Message Sent Successfully</h3>
+                <p>Thank you for contacting us. Our admin team will respond to your message shortly.</p>
+                <a href="index.html" class="cta-button">Return Home</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Opening Hours</h4>
+                <p>Mon-Fri: 9am - 6pm</p>
+                <p>Sat: By Appointment only</p>
+                <p>Sun: Closed</p>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>22 Grand Street</p>
+                <p>City Centre, B6 4AB</p>
+                <p>07117 345678</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <a href="booking.html">Book Online</a>
+                <a href="services.html">Our Services</a>
+                <a href="contact.html">Contact Us</a>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2024 City Centre Vehicle Garage. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const contactForm = document.getElementById('contactForm');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const formData = {
+                        id: 'msg-' + Date.now(),
+                        date: new Date().toISOString(),
+                        name: document.getElementById('contactName').value,
+                        email: document.getElementById('contactEmail').value,
+                        phone: document.getElementById('contactPhone').value,
+                        subject: document.getElementById('contactSubject').value,
+                        message: document.getElementById('contactMessage').value,
+                        status: 'pending'
+                    };
+                    
+                    const messages = JSON.parse(localStorage.getItem('garageMessages')) || [];
+                    messages.push(formData);
+                    localStorage.setItem('garageMessages', JSON.stringify(messages));
+                    
+                    const confirmation = document.getElementById('contactConfirmation');
+                    if (confirmation) {
+                        confirmation.style.display = 'block';
+                        contactForm.reset();
+                        confirmation.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Centre Vehicle Garage - Compete with Main Dealers</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            color: darkslategray;
+            background-color: white;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            font-weight: 700;
+            font-size: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .logo-text span:first-child {
+            color: royalblue;
+        }
+
+        .logo-text span:last-child {
+            color: darkblue;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: darkslategray;
+            font-weight: 600;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: royalblue;
+        }
+
+        nav a.active {
+            color: royalblue;
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: royalblue;
+        }
+
+        .login-btn {
+            background-color: royalblue;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            transition: background-color 0.3s;
+        }
+
+        .login-btn:hover {
+            background-color: darkblue;
+        }
+
+        .hero {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5% 10%;
+            height: 80vh;
+            min-height: 600px;
+            overflow: hidden;
+            color: white;
+            text-align: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .hero-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide-1 {
+            background-image: url('service1.jpg');
+        }
+
+        .slide-2 {
+            background-image: url('service2.jpg');
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.8rem;
+            color: white;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: orangered;
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-button:hover {
+            background-color: darkorange;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 5rem 10%;
+            background-color: white;
+        }
+
+        .feature-card {
+            flex: 1;
+            text-align: center;
+            padding: 2rem;
+            border-radius: 10px;
+            background-color: whitesmoke;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: royalblue;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: darkblue;
+        }
+
+        .feature-card p {
+            color: dimgray;
+        }
+
+        .why-us {
+            padding: 5rem 10%;
+            background-color: whitesmoke;
+            text-align: center;
+        }
+
+        .why-us h2 {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: black;
+        }
+
+        .benefits {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .benefit {
+            flex: 1;
+            max-width: 350px;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .benefit h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: royalblue;
+        }
+
+        footer {
+            background-color: black;
+            color: white;
+            padding: 4rem 10% 2rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section {
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .footer-section h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .footer-section p, 
+        .footer-section a {
+            color: silver;
+            margin-bottom: 0.8rem;
+            display: block;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid gray;
+            color: silver;
+            font-size: 0.9rem;
+        }
+
+        .cookie-notice {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: black;
+            color: white;
+            padding: 1rem 2rem;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .cookie-notice p {
+            margin-right: 2rem;
+        }
+
+        .cookie-notice button {
+            background-color: orangered;
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .cookie-notice button:hover {
+            background-color: darkorange;
+        }
+
+        @media (max-width: 1024px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding: 3rem 5%;
+                height: auto;
+                min-height: auto;
+            }
+            
+            .hero-content {
+                padding-right: 0;
+                margin-bottom: 0;
+            }
+            
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1.5rem;
+            }
+            
+            .features {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .feature-card {
+                max-width: 500px;
+                width: 100%;
+                margin-bottom: 2rem;
+            }
+            
+            .benefits {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .benefit {
+                margin-bottom: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .footer-section {
+                margin-bottom: 2rem;
+            }
+            
+            .cookie-notice {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .cookie-notice p {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+            
+            .logo {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo img {
+                height: 50px;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cookie-notice">
+        <p>This website uses cookies to improve your experience. We'll assume you're ok with this, but you can opt-out if you wish.</p>
+        <button id="acceptCookies">Accept</button>
+    </div>
+
+    <header>
+        <div class="logo">
+            <img src="garragelogo.png" alt="City Centre Vehicle Garage Logo">
+            <div class="logo-text">
+                <span>City Centre</span>
+                <span>Vehicle Garage</span>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="quotation.html">Quotes</a></li>
+                <li><a href="booking.html">Book</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="login.html" class="login-btn">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-slider">
+            <div class="slide slide-1 active"></div>
+            <div class="slide slide-2"></div>
+        </div>
+        <div class="hero-content">
+            <h1>Book Services For Your Vehicle Online</h1>
+            <p class="subtitle">we provide best and fast services in Birmingham</p>
+            <a href="booking.html" class="cta-button">Book Your Appointment Now ►</a>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="feature-card">
+            <div class="feature-icon"></div>
+            <h3>Competitive Pricing</h3>
+            <p>Transparent pricing that beats main dealer rates</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon"></div> 
+            <h3>Expert Technicians</h3>
+            <p>Factory-trained mechanics with dealer experience</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon"></div>
+            <h3>Fast Service</h3>
+            <p>Same-day appointments often available</p>
+        </div>
+    </section>
+
+    <section class="why-us">
+        <h2>Why Choose Our Garage?</h2>
+        <div class="benefits">
+            <div class="benefit">
+                <h3>Personal Service</h3>
+                <p>Unlike main dealers, you'll always deal directly with our technicians</p>
+            </div>
+            <div class="benefit">
+                <h3>Genuine Parts</h3>
+                <p>We use OEM parts at competitive prices</p>
+            </div>
+            <div class="benefit">
+                <h3>Local Expertise</h3>
+                <p>We know the specific needs of vehicles in our area</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Opening Hours</h4>
+                <p>Mon-Fri: 9am - 6pm</p>
+                <p>Sat: By Appointment only</p>
+                <p>Sun: Closed</p>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>22 Grand Street</p>
+                <p>City Centre, B6 4AB</p>
+                <p>07117 345678</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <a href="booking.html">Book Online</a>
+                <a href="services.html">Our Services</a>
+                <a href="contact.html">Contact Us</a>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2024 City Centre Vehicle Garage. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cookieNotice = document.querySelector('.cookie-notice');
+            const acceptCookies = document.getElementById('acceptCookies');
+            
+            if (!document.cookie.includes('cookies_accepted=true')) {
+                cookieNotice.style.display = 'flex';
+            }
+            
+            if (acceptCookies) {
+                acceptCookies.addEventListener('click', function() {
+                    const expiryDate = new Date();
+                    expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+                    document.cookie = `cookies_accepted=true; expires=${expiryDate.toUTCString()}; path=/`;
+                    cookieNotice.style.display = 'none';
+                });
+            }
+            
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            const contactForm = document.getElementById('contactForm');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert('Thank you for your message! We will contact you soon.');
+                    this.reset();
+                });
+            }
+
+            const slides = document.querySelectorAll('.slide');
+            let currentSlide = 0;
+            
+            function nextSlide() {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }
+            
+            setInterval(nextSlide, 3000);
+        });
+    </script>
+</body>
+</html>

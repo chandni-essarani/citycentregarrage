@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services - City Centre Vehicle Garage</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            color: darkslategray;
+            background-color: white;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            font-weight: 700;
+            font-size: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .logo-text span:first-child {
+            color: royalblue;
+        }
+
+        .logo-text span:last-child {
+            color: darkblue;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: darkslategray;
+            font-weight: 600;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: royalblue;
+        }
+
+        nav a.active {
+            color: royalblue;
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: royalblue;
+        }
+
+        .login-btn {
+            background-color: royalblue;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            transition: background-color 0.3s;
+        }
+
+        .login-btn:hover {
+            background-color: darkblue;
+        }
+
+        main {
+            padding: 5rem 10%;
+            background: linear-gradient(135deg, whitesmoke 0%, gainsboro 100%);
+            min-height: calc(100vh - 200px);
+        }
+
+        .quote-form {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 3rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .quote-form h2 {
+            font-size: 2.5rem;
+            color: black;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .quote-form > p {
+            text-align: center;
+            color: dimgray;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: darkslategray;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid lightgray;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="date"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: royalblue;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 0.5rem;
+        }
+
+        .checkbox-label {
+            font-weight: normal;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: orangered;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
+
+        .cta-button:hover {
+            background-color: darkorange;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .quote-result {
+            text-align: center;
+            padding: 2rem;
+            background-color: whitesmoke;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+
+        .quote-result h3 {
+            font-size: 1.8rem;
+            color: royalblue;
+            margin-bottom: 1rem;
+        }
+
+        .quote-result p {
+            margin-bottom: 1rem;
+        }
+
+        #quoteAmount {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: orangered;
+        }
+
+        footer {
+            background-color: black;
+            color: white;
+            padding: 4rem 10% 2rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section {
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .footer-section h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .footer-section p, 
+        .footer-section a {
+            color: silver;
+            margin-bottom: 0.8rem;
+            display: block;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid gray;
+            color: silver;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+            
+            .logo {
+                text-align: center;
+                margin-bottom: 1rem;
+            }
+            
+            .quote-form {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="garragelogo.png" alt="City Centre Vehicle Garage Logo">
+            <div class="logo-text">
+                <span>City Centre</span>
+                <span>Vehicle Garage</span>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="quotation.html" class="active">Get a Quote</a></li>
+                <li><a href="booking.html">Book Appointment</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="login.html" class="login-btn">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="quote-form">
+            <h2>Get a Service Quote</h2>
+            <p>Fill out the form below to receive a quote for your vehicle service</p>
+            
+            <form id="quotationForm">
+                <div class="form-group">
+                    <label for="name">Full Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number:</label>
+                    <input type="tel" id="phone" name="phone">
+                </div>
+                
+                <div class="form-group">
+                    <label for="vehicleType">Vehicle Type:</label>
+                    <select id="vehicleType" name="vehicleType" required>
+                        <option value="">Select Vehicle Type</option>
+                        <option value="SUV">SUV</option>
+                        <option value="Minibus">Minibus</option>
+                        <option value="Convertible">Convertible</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="serviceType">Service Needed:</label>
+                    <select id="serviceType" name="serviceType" required>
+                        <option value="">Select Service</option>
+                        <option value="Minor Repair">Minor Repair</option>
+                        <option value="Major Repair">Major Repair</option>
+                        <option value="General Service">General Service</option>
+                        <option value="Health Check">Health Check</option>
+                        <option value="MOT">MOT Test</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="motDateGroup" style="display: none;">
+                    <label for="motExpiry">MOT Expiry Date (if applicable):</label>
+                    <input type="date" id="motExpiry" name="motExpiry">
+                </div>
+                
+                <div class="form-group">
+                    <label for="saturdayService">Saturday Service:</label>
+                    <input type="checkbox" id="saturdayService" name="saturdayService">
+                    <span class="checkbox-label">Check if you need Saturday service</span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="additionalInfo">Additional Information:</label>
+                    <textarea id="additionalInfo" name="additionalInfo" rows="4"></textarea>
+                </div>
+                
+                <button type="submit" class="cta-button">Get Quote</button>
+            </form>
+            
+            <div id="quoteResult" class="quote-result" style="display: none;">
+                <h3>Your Estimated Quote</h3>
+                <p id="quoteAmount"></p>
+                <p id="quoteDetails"></p>
+                <p>This quote will be emailed to you shortly.</p>
+                <a href="booking.html" class="cta-button">Book Now</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Opening Hours</h4>
+                <p>Mon-Fri: 9am - 6pm</p>
+                <p>Sat: By Appointment only</p>
+                <p>Sun: Closed</p>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>22 Grand Street</p>
+                <p>City Centre, B6 4AB</p>
+                <p>07117 345678</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <a href="booking.html">Book Online</a>
+                <a href="services.html">Our Services</a>
+                <a href="contact.html">Contact Us</a>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2024 City Centre Vehicle Garage. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const serviceType = document.getElementById('serviceType');
+            const motDateGroup = document.getElementById('motDateGroup');
+            
+            serviceType.addEventListener('change', function() {
+                if (this.value === 'MOT') {
+                    motDateGroup.style.display = 'block';
+                } else {
+                    motDateGroup.style.display = 'none';
+                }
+            });
+            
+            const quotationForm = document.getElementById('quotationForm');
+            const quoteResult = document.getElementById('quoteResult');
+            const quoteAmount = document.getElementById('quoteAmount');
+            const quoteDetails = document.getElementById('quoteDetails');
+            
+            const pricing = {
+                "Minor Repair": { "SUV": 120, "Minibus": 150, "Convertible": 140, "Other": 130 },
+                "Major Repair": { "SUV": 350, "Minibus": 400, "Convertible": 380, "Other": 370 },
+                "General Service": { "SUV": 180, "Minibus": 220, "Convertible": 200, "Other": 190 },
+                "Health Check": { "SUV": 60, "Minibus": 70, "Convertible": 65, "Other": 60 },
+                "MOT": { "SUV": 45, "Minibus": 50, "Convertible": 45, "Other": 45 }
+            };
+            
+            if (quotationForm) {
+                quotationForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const name = document.getElementById('name').value;
+                    const vehicleType = document.getElementById('vehicleType').value;
+                    const serviceType = document.getElementById('serviceType').value;
+                    const saturdayService = document.getElementById('saturdayService').checked;
+                    
+                    let basePrice = pricing[serviceType][vehicleType];
+                    let totalPrice = basePrice;
+                    let details = [];
+                    
+                    details.push(`Base price for ${serviceType} on ${vehicleType}: £${basePrice}`);
+                    
+                    if (saturdayService) {
+                        totalPrice += 30;
+                        details.push(`Saturday service premium: £30`);
+                    }
+                    
+                    const vat = totalPrice * 0.2;
+                    totalPrice += vat;
+                    details.push(`VAT (20%): £${vat.toFixed(2)}`);
+                    
+                    quoteAmount.textContent = `£${totalPrice.toFixed(2)}`;
+                    quoteDetails.innerHTML = details.join('<br>');
+                    quotationForm.style.display = 'none';
+                    quoteResult.style.display = 'block';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

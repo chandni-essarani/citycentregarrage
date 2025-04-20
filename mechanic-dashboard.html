@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mechanic Dashboard - City Centre Vehicle Garage</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: royalblue;
+            --primary-dark: darkblue;
+            --secondary: orangered;
+            --secondary-dark: rgb(224, 62, 0);
+            --success: green;
+            --warning: gold;
+            --danger: crimson;
+            --light: whitesmoke;
+            --dark: darkslategray;
+            --white: white;
+            --black: black;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--white);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            font-weight: 700;
+            font-size: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .logo-text span:first-child {
+            color: var(--primary);
+        }
+
+        .logo-text span:last-child {
+            color: var(--primary-dark);
+        }
+
+        .logo p {
+            font-size: 0.9rem;
+            color: dimgray;
+            margin-top: 0.3rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        nav a.active {
+            color: var(--primary);
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        #logout {
+            background-color: var(--secondary);
+            color: var(--white);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }
+
+        #logout:hover {
+            background-color: var(--secondary-dark);
+        }
+
+        main {
+            padding: 2rem 5%;
+            min-height: calc(100vh - 200px);
+        }
+
+        .dashboard-container {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .dashboard-container h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        #mechanicName {
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .availability-form {
+            background-color: var(--light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .availability-form h3 {
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+        }
+
+        .calendar-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background-color: var(--light);
+            border-radius: 8px;
+        }
+
+        #currentWeek {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .dashboard-button {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .dashboard-button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+            flex: 1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Montserrat', sans-serif;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(65, 105, 225, 0.2);
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .day-column {
+            background-color: var(--light);
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .day-column h3 {
+            color: var(--primary-dark);
+            text-align: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .time-slot {
+            padding: 0.8rem;
+            margin-bottom: 0.8rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+
+        .time-slot:hover {
+            transform: translateY(-2px);
+        }
+
+        .time-slot span {
+            display: block;
+        }
+
+        .time-slot .slot-time {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .time-slot.available {
+            background-color: #e6f7e6;
+            color: var(--success);
+            border-left: 4px solid var(--success);
+        }
+
+        .time-slot.booked {
+            background-color: #fff8e6;
+            color: var(--warning);
+            border-left: 4px solid var(--warning);
+        }
+
+        .time-slot.unavailable {
+            background-color: #ffebee;
+            color: var(--danger);
+            border-left: 4px solid var(--danger);
+        }
+
+        .message {
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .success-message {
+            background-color: #e6f7e6;
+            color: var(--success);
+            border: 1px solid #c3e6cb;
+        }
+
+        .error-message {
+            background-color: #ffebee;
+            color: var(--danger);
+            border: 1px solid #f5c6cb;
+        }
+
+        .time-range-selector {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .time-range-selector .form-group {
+            flex: 1;
+        }
+
+        footer {
+            background-color: var(--black);
+            color: var(--white);
+            padding: 4rem 10% 2rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section {
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .footer-section h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .footer-section p, 
+        .footer-section a {
+            color: silver;
+            margin-bottom: 0.8rem;
+            display: block;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid gray;
+            color: silver;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+            
+            .logo {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+            
+            .logo img {
+                height: 50px;
+                margin: 0 auto;
+            }
+            
+            .schedule-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .calendar-controls {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .time-range-selector {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .footer-section {
+                margin-bottom: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="garragelogo.png" alt="City Centre Vehicle Garage Logo">
+            <div class="logo-text">
+                <span>City Centre</span>
+                <span>Vehicle Garage</span>
+                <p>Mechanic Dashboard</p>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">View Site</a></li>
+                <li><a href="mechanic-dashboard.html" class="active">My Schedule</a></li>
+                <li><button id="logout">Logout <i class="fas fa-sign-out-alt"></i></button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="dashboard-container">
+            <h2>My Schedule</h2>
+            <span id="mechanicName">Logged in as: Loading...</span>
+            
+            <div id="messageContainer" class="message" style="display: none;"></div>
+            
+            <div class="availability-form">
+                <h3>Update Availability</h3>
+                <form id="availabilityForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="availDate">Date:</label>
+                            <input type="date" id="availDate" name="availDate" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="availStatus">Status:</label>
+                            <select id="availStatus" name="availStatus" required>
+                                <option value="available">Available</option>
+                                <option value="unavailable">Unavailable</option>
+                                <option value="booked">Booked</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row time-range-selector">
+                        <div class="form-group">
+                            <label for="startTime">Start Time:</label>
+                            <select id="startTime" name="startTime" required>
+                                <option value="9">9:00 AM</option>
+                                <option value="10">10:00 AM</option>
+                                <option value="11">11:00 AM</option>
+                                <option value="12">12:00 PM</option>
+                                <option value="13">1:00 PM</option>
+                                <option value="14">2:00 PM</option>
+                                <option value="15">3:00 PM</option>
+                                <option value="16">4:00 PM</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="endTime">End Time:</label>
+                            <select id="endTime" name="endTime" required>
+                                <option value="10">10:00 AM</option>
+                                <option value="11">11:00 AM</option>
+                                <option value="12">12:00 PM</option>
+                                <option value="13">1:00 PM</option>
+                                <option value="14">2:00 PM</option>
+                                <option value="15">3:00 PM</option>
+                                <option value="16">4:00 PM</option>
+                                <option value="17">5:00 PM</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="availNotes">Notes:</label>
+                        <textarea id="availNotes" name="availNotes" rows="3"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="dashboard-button">
+                        <i class="fas fa-save"></i> Update
+                    </button>
+                </form>
+            </div>
+            
+            <div class="calendar-controls">
+                <button id="prevWeek" class="dashboard-button">
+                    <i class="fas fa-chevron-left"></i> Previous Week
+                </button>
+                <span id="currentWeek">Week of Monday, April 14, 2025</span>
+                <button id="nextWeek" class="dashboard-button">
+                    Next Week <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            
+            <div class="schedule-grid" id="scheduleGrid">
+                <div class="loading-message">Loading schedule...</div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Opening Hours</h4>
+                <p>Mon-Fri: 9am - 6pm</p>
+                <p>Sat: By Appointment only</p>
+                <p>Sun: Closed</p>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>22 Grand Street</p>
+                <p>City Centre, B6 4AB</p>
+                <p>07117 345678</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <a href="booking.html">Book Online</a>
+                <a href="services.html">Our Services</a>
+                <a href="contact.html">Contact Us</a>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2024 City Centre Vehicle Garage. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userData = localStorage.getItem('garageUser');
+            if (!userData) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const user = JSON.parse(userData);
+            if (user.role !== 'mechanic') {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            if (!user.id) {
+                const mechanics = {
+                    'Rahul Kumar': '1',
+                    'Sara Ali': '2',
+                    'Eshwar Lal': '3',
+                    'Priya Patel': '4'
+                };
+                user.id = mechanics[user.name] || '1';
+                localStorage.setItem('garageUser', JSON.stringify(user));
+            }
+
+            document.getElementById('mechanicName').textContent = `Logged in as: ${user.name}`;
+
+            let currentDate = new Date();
+            let currentWeekStart = getStartOfWeek(currentDate);
+
+            updateWeekDisplay();
+            loadScheduleData();
+            
+            document.getElementById('availDate').valueAsDate = new Date();
+
+            document.getElementById('logout').addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('garageUser');
+                window.location.href = 'login.html';
+            });
+
+            document.getElementById('prevWeek').addEventListener('click', function() {
+                currentWeekStart.setDate(currentWeekStart.getDate() - 7);
+                updateWeekDisplay();
+                loadScheduleData();
+            });
+
+            document.getElementById('nextWeek').addEventListener('click', function() {
+                currentWeekStart.setDate(currentWeekStart.getDate() + 7);
+                updateWeekDisplay();
+                loadScheduleData();
+            });
+
+            function getStartOfWeek(date) {
+                const d = new Date(date);
+                const day = d.getDay();
+                const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+                return new Date(d.setDate(diff));
+            }
+
+            function updateWeekDisplay() {
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                document.getElementById('currentWeek').textContent = 
+                    `Week of ${currentWeekStart.toLocaleDateString('en-US', options)}`;
+            }
+
+            function loadScheduleData() {
+                const scheduleGrid = document.getElementById('scheduleGrid');
+                scheduleGrid.innerHTML = '<div class="loading-message">Loading schedule...</div>';
+                
+                setTimeout(() => {
+                    try {
+                        generateSchedule(currentWeekStart);
+                    } catch (error) {
+                        console.error("Error loading schedule:", error);
+                        scheduleGrid.innerHTML = '<div class="error-message">Error loading schedule</div>';
+                    }
+                }, 100);
+            }
+
+            function generateSchedule(startDate) {
+                const scheduleGrid = document.getElementById('scheduleGrid');
+                scheduleGrid.innerHTML = '';
+                
+                const scheduleData = JSON.parse(localStorage.getItem('garageSchedule')) || {};
+                const appointments = JSON.parse(localStorage.getItem('garageAppointments')) || [];
+                const mechanicId = JSON.parse(localStorage.getItem('garageUser')).id;
+                
+                for (let i = 0; i < 5; i++) {
+                    const dayDate = new Date(startDate);
+                    dayDate.setDate(startDate.getDate() + i);
+                    
+                    const dateKey = dayDate.toISOString().split('T')[0];
+                    const dayColumn = document.createElement('div');
+                    dayColumn.className = 'day-column';
+                    
+                    const dayName = dayDate.toLocaleDateString('en-US', { weekday: 'long' });
+                    const dateStr = dayDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                    
+                    dayColumn.innerHTML = `<h3>${dayName} (${dateStr})</h3>`;
+                    
+                    for (let hour = 9; hour < 17; hour++) {
+                        const timeSlot = document.createElement('div');
+                        const timeStr = formatTime(hour);
+                        
+                        const slotKey = `${dateKey}-${hour}`;
+                        let slotData = scheduleData[slotKey];
+                        
+                        if (slotData && slotData.mechanicId === mechanicId) {
+                            timeSlot.className = `time-slot ${slotData.status}`;
+                            timeSlot.innerHTML = `
+                                <span class="slot-time">${timeStr}</span>
+                                <span class="slot-status">${capitalizeFirstLetter(slotData.status)}</span>
+                            `;
+                            
+                            if (slotData.status === 'booked') {
+                                const appointment = findMatchingAppointment(appointments, dateKey, hour, mechanicId);
+                                if (appointment) {
+                                    timeSlot.innerHTML += `
+                                        <span class="slot-details">Service: ${appointment.service}</span>
+                                        <span class="slot-details">Vehicle: ${appointment.vehicleMake} ${appointment.vehicleType}</span>
+                                        <span class="slot-details">Customer: ${appointment.customerName}</span>
+                                    `;
+                                } else if (slotData.service || slotData.customer) {
+                                    timeSlot.innerHTML += `
+                                        <span class="slot-details">${slotData.service || 'Service'}</span>
+                                        <span class="slot-details">${slotData.customer || 'Customer'}</span>
+                                    `;
+                                }
+                            } else if (slotData.notes) {
+                                timeSlot.innerHTML += `<span class="slot-details">Notes: ${slotData.notes}</span>`;
+                            }
+                        } else {
+                            timeSlot.className = 'time-slot available';
+                            timeSlot.innerHTML = `
+                                <span class="slot-time">${timeStr}</span>
+                                <span class="slot-status">Available</span>
+                            `;
+                        }
+                        
+                        timeSlot.addEventListener('click', function() {
+                            document.getElementById('availDate').value = dateKey;
+                            document.getElementById('startTime').value = hour;
+                            document.getElementById('endTime').value = hour + 1;
+                            
+                            if (timeSlot.classList.contains('available')) {
+                                document.getElementById('availStatus').value = 'available';
+                            } else if (timeSlot.classList.contains('unavailable')) {
+                                document.getElementById('availStatus').value = 'unavailable';
+                            } else {
+                                document.getElementById('availStatus').value = 'booked';
+                            }
+                            
+                            document.getElementById('availabilityForm').scrollIntoView({ 
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        });
+                        
+                        dayColumn.appendChild(timeSlot);
+                    }
+                    
+                    scheduleGrid.appendChild(dayColumn);
+                }
+            }
+
+            function findMatchingAppointment(appointments, dateKey, hour, mechanicId) {
+                return appointments.find(appt => {
+                    const apptDate = new Date(appt.date).toISOString().split('T')[0];
+                    const apptHour = parseInt(appt.time.split(':')[0]);
+                    return apptDate === dateKey && 
+                           apptHour === hour &&
+                           appt.mechanicId === mechanicId;
+                });
+            }
+
+            function formatTime(hour) {
+                return hour < 12 ? `${hour}:00 AM` : 
+                       hour === 12 ? '12:00 PM' : 
+                       `${hour - 12}:00 PM`;
+            }
+
+            function capitalizeFirstLetter(string) {
+                return string.charAt(0).toUpperCase() + string.slice(1);
+            }
+
+            document.getElementById('availabilityForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                try {
+                    const date = document.getElementById('availDate').value;
+                    const status = document.getElementById('availStatus').value;
+                    const notes = document.getElementById('availNotes').value;
+                    const startTime = parseInt(document.getElementById('startTime').value);
+                    const endTime = parseInt(document.getElementById('endTime').value);
+                    const user = JSON.parse(localStorage.getItem('garageUser'));
+                    
+                    if (!date) {
+                        showMessage('Please select a date', 'error');
+                        return;
+                    }
+                    
+                    if (startTime >= endTime) {
+                        showMessage('End time must be after start time', 'error');
+                        return;
+                    }
+                    
+                    const scheduleData = JSON.parse(localStorage.getItem('garageSchedule')) || {};
+                    const adminData = JSON.parse(localStorage.getItem('garageAdminData')) || { mechanics: {} };
+                    
+                    for (let hour = startTime; hour < endTime; hour++) {
+                        const slotKey = `${date}-${hour}`;
+                        
+                        scheduleData[slotKey] = {
+                            mechanicId: user.id,
+                            mechanicName: user.name,
+                            status: status,
+                            notes: notes,
+                            date: date,
+                            hour: hour,
+                            updatedAt: new Date().toISOString()
+                        };
+                        
+                        if (!adminData.mechanics[user.id]) {
+                            adminData.mechanics[user.id] = { 
+                                name: user.name, 
+                                schedule: {} 
+                            };
+                        }
+                        adminData.mechanics[user.id].schedule[slotKey] = {
+                            status: status,
+                            notes: notes,
+                            date: date,
+                            hour: hour,
+                            updatedAt: new Date().toISOString()
+                        };
+                    }
+                    
+                    localStorage.setItem('garageSchedule', JSON.stringify(scheduleData));
+                    localStorage.setItem('garageAdminData', JSON.stringify(adminData));
+                    
+                    showMessage('Availability updated successfully!', 'success');
+                    
+                    this.reset();
+                    document.getElementById('availDate').valueAsDate = new Date();
+                    document.getElementById('startTime').value = '9';
+                    document.getElementById('endTime').value = '10';
+                    
+                    loadScheduleData();
+                    
+                } catch (error) {
+                    console.error("Error saving availability:", error);
+                    showMessage('Failed to save availability. Please try again.', 'error');
+                }
+            });
+
+            function showMessage(message, type) {
+                const messageContainer = document.getElementById('messageContainer');
+                messageContainer.textContent = message;
+                messageContainer.className = `message ${type}-message`;
+                messageContainer.style.display = 'block';
+                
+                setTimeout(() => {
+                    messageContainer.style.display = 'none';
+                }, 5000);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services - City Centre Vehicle Garage</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            color: darkslategray;
+            background-color: white;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            font-weight: 700;
+            font-size: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .logo-text span:first-child {
+            color: royalblue;
+        }
+
+        .logo-text span:last-child {
+            color: darkblue;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: darkslategray;
+            font-weight: 600;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: royalblue;
+        }
+
+        nav a.active {
+            color: royalblue;
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: royalblue;
+        }
+
+        .login-btn {
+            background-color: royalblue;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            transition: background-color 0.3s;
+        }
+
+        .login-btn:hover {
+            background-color: darkblue;
+        }
+
+        main {
+            padding: 5rem 10%;
+            background: linear-gradient(135deg, whitesmoke 0%, gainsboro 100%);
+        }
+
+        .services-intro {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .services-intro h2 {
+            font-size: 2.5rem;
+            color: black;
+            margin-bottom: 1rem;
+        }
+
+        .services-intro p {
+            font-size: 1.2rem;
+            color: dimgray;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .service-table, .mot-info, .saturday-info {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 3rem;
+        }
+
+        .service-table h3, .mot-info h3, .saturday-info h3 {
+            font-size: 1.8rem;
+            color: royalblue;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .service-table p {
+            text-align: center;
+            color: dimgray;
+            margin-bottom: 1.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid lightgray;
+        }
+
+        th {
+            background-color: royalblue;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: whitesmoke;
+        }
+
+        tr:hover {
+            background-color: gainsboro;
+        }
+
+        ul {
+            list-style-position: inside;
+            margin: 1.5rem 0;
+        }
+
+        li {
+            margin-bottom: 0.8rem;
+        }
+
+        .service-cta {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: orangered;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .cta-button:hover {
+            background-color: darkorange;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            background-color: black;
+            color: white;
+            padding: 4rem 10% 2rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section {
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .footer-section h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .footer-section p, 
+        .footer-section a {
+            color: silver;
+            margin-bottom: 0.8rem;
+            display: block;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid gray;
+            color: silver;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 1024px) {
+            main {
+                padding: 3rem 5%;
+            }
+            
+            .service-table, .mot-info, .saturday-info {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+            
+            .logo {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+            
+            .logo img {
+                height: 50px;
+                margin: 0 auto;
+            }
+            
+            .service-table, .mot-info, .saturday-info {
+                padding: 1.5rem;
+            }
+            
+            .service-cta {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            table {
+                font-size: 0.9rem;
+            }
+            
+            th, td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="garragelogo.png" alt="City Centre Vehicle Garage Logo">
+            <div class="logo-text">
+                <span>City Centre</span>
+                <span>Vehicle Garage</span>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html" class="active">Services</a></li>
+                <li><a href="quotation.html">Get a Quote</a></li>
+                <li><a href="booking.html">Book Appointment</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="login.html" class="login-btn">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="services-intro">
+            <h2>Our Services</h2>
+            <p>We offer a comprehensive range of vehicle services to keep your car in top condition.</p>
+        </section>
+
+        <section class="service-table">
+            <h3>Service Pricing Guide</h3>
+            <p>All prices are VAT exclusive</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Vehicle Type</th>
+                        <th>Minor Repair</th>
+                        <th>Major Repair</th>
+                        <th>General Service</th>
+                        <th>Health Check</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>SUV</td>
+                        <td>£450</td>
+                        <td>£1200</td>
+                        <td>£200</td>
+                        <td>£100</td>
+                    </tr>
+                    <tr>
+                        <td>Minibus</td>
+                        <td>£550</td>
+                        <td>£1500</td>
+                        <td>£350</td>
+                        <td>£150</td>
+                    </tr>
+                    <tr>
+                        <td>Convertible</td>
+                        <td>£100</td>
+                        <td>£800</td>
+                        <td>£150</td>
+                        <td>£50</td>
+                    </tr>
+                    <tr>
+                        <td>Other types</td>
+                        <td>£200</td>
+                        <td>£1000</td>
+                        <td>£150</td>
+                        <td>£70</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="mot-info">
+            <h3>MOT Services</h3>
+            <ul>
+                <li>Standard MOT test: £40 (VAT exclusive)</li>
+                <li>Only available within 7 days before expiration</li>
+                <li>30% surcharge if booked after expiration date</li>
+                <li>Not available more than 7 days before expiration</li>
+            </ul>
+        </section>
+
+        <section class="saturday-info">
+            <h3>Saturday Services</h3>
+            <p>Saturday appointments available at:</p>
+            <ul>
+                <li>50% surcharge on service fees</li>
+                <li>£50 flat rate administrative fee</li>
+            </ul>
+        </section>
+
+        <div class="service-cta">
+            <a href="quotation.html" class="cta-button">Get a Quote</a>
+            <a href="booking.html" class="cta-button">Book Now</a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Opening Hours</h4>
+                <p>Mon-Fri: 9am - 6pm</p>
+                <p>Sat: By Appointment only</p>
+                <p>Sun: Closed</p>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>22 Grand Street</p>
+                <p>City Centre, B6 4AB</p>
+                <p>07117 345678</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <a href="booking.html">Book Online</a>
+                <a href="services.html">Our Services</a>
+                <a href="contact.html">Contact Us</a>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 City Centre Vehicle Garage. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tableRows = document.querySelectorAll('tbody tr');
+            tableRows.forEach(row => {
+                row.addEventListener('mouseenter', function() {
+                    this.style.transition = 'background-color 0.3s ease';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

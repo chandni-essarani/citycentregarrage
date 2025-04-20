@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - City Centre Vehicle Garage</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: royalblue;
+            --primary-dark: darkblue;
+            --secondary: orangered;
+            --secondary-dark: rgb(224, 62, 0);
+            --success: green;
+            --warning: gold;
+            --danger: crimson;
+            --light: whitesmoke;
+            --dark: darkslategray;
+            --white: white;
+            --black: black;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--white);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            font-weight: 700;
+            font-size: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .logo-text span:first-child {
+            color: var(--primary);
+        }
+
+        .logo-text span:last-child {
+            color: var(--primary-dark);
+        }
+
+        .logo p {
+            font-size: 0.9rem;
+            color: dimgray;
+            margin-top: 0.3rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        nav a.active {
+            color: var(--primary);
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        #logout {
+            background-color: var(--secondary);
+            color: var(--white);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }
+
+        #logout:hover {
+            background-color: var(--secondary-dark);
+        }
+
+        main {
+            padding: 2rem 5%;
+            min-height: calc(100vh - 200px);
+        }
+
+        .dashboard-container {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .dashboard-container h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        #adminName {
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: var(--light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 1.1rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .dashboard-tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 2rem;
+        }
+
+        .tab-button {
+            padding: 0.8rem 1.5rem;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            color: var(--dark);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-button.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-button:hover:not(.active) {
+            color: var(--primary-dark);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .message {
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+
+        .success-message {
+            background-color: #e6f7e6;
+            color: var(--success);
+            border: 1px solid #c3e6cb;
+        }
+
+        .error-message {
+            background-color: #ffebee;
+            color: var(--danger);
+            border: 1px solid #f5c6cb;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: var(--primary);
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .status-pending {
+            color: var(--warning);
+            font-weight: 600;
+        }
+
+        .status-confirmed {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .status-cancelled {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        .status-available {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .status-booked {
+            color: var(--warning);
+            font-weight: 600;
+        }
+
+        .status-unavailable {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        .action-button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .confirm-btn {
+            background-color: var(--success);
+            color: var(--white);
+        }
+
+        .confirm-btn:hover {
+            background-color: #218838;
+        }
+
+        .cancel-btn {
+            background-color: var(--danger);
+            color: var(--white);
+        }
+
+        .cancel-btn:hover {
+            background-color: #c82333;
+        }
+
+        .reply-btn {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .reply-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Montserrat', sans-serif;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(65, 105, 225, 0.2);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .dashboard-button {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .dashboard-button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .week-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .schedule-day {
+            min-width: 150px;
+        }
+
+        .time-slot-info {
+            margin: 0.3rem 0;
+            padding: 0.3rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h3 {
+            color: var(--primary);
+            margin: 0;
+        }
+
+        .close-modal {
+            color: var(--dark);
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-modal:hover {
+            color: var(--danger);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        footer {
+            background-color: var(--black);
+            color: var(--white);
+            padding: 2rem 5%;
+            text-align: center;
+        }
+
+        footer {
+            background-color: black;
+            color: white;
+            padding: 4rem 10% 2rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section {
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .footer-section h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .footer-section p, 
+        .footer-section a {
+            color: silver;
+            margin-bottom: 0.8rem;
+            display: block;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid gray;
+            color: silver;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+            
+            .logo {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+            
+            .logo img {
+                height: 50px;
+                margin: 0 auto;
+            }
+            
+            .dashboard-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .dashboard-tabs {
+                flex-direction: column;
+                border-bottom: none;
+            }
+            
+            .tab-button {
+                border-bottom: none;
+                border-left: 3px solid transparent;
+                text-align: left;
+            }
+            
+            .tab-button.active {
+                border-left-color: var(--primary);
+            }
+            
+            table {
+                font-size: 0.9rem;
+            }
+            
+            th, td {
+                padding: 0.5rem;
+            }
+            
+            .modal-content {
+                margin: 20% auto;
+                width: 90%;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .footer-section {
+                margin-bottom: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="garragelogo.png" alt="City Centre Vehicle Garage Logo">
+            <div class="logo-text">
+                <span>City Centre</span>
+                <span>Vehicle Garage</span>
+                <p>Admin Dashboard</p>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">View Site</a></li>
+                <li><a href="admin-dashboard.html" class="active">Dashboard</a></li>
+                <li><button id="logout">Logout <i class="fas fa-sign-out-alt"></i></button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="dashboard-container">
+            <h2>Admin Dashboard</h2>
+            <span id="adminName">Logged in as: Loading...</span>
+            
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <h3>New Messages</h3>
+                    <div class="stat-value" id="newMessagesCount">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Pending Appointments</h3>
+                    <div class="stat-value" id="pendingAppointments">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Confirmed Appointments</h3>
+                    <div class="stat-value" id="confirmedAppointments">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Revenue This Week</h3>
+                    <div class="stat-value" id="weeklyRevenue">£0</div>
+                </div>
+            </div>
+            
+            <div class="dashboard-tabs">
+                <button class="tab-button active" data-tab="messages">Customer Messages</button>
+                <button class="tab-button" data-tab="appointments">Appointments</button>
+                <button class="tab-button" data-tab="mechanics">Mechanics Schedule</button>
+                <button class="tab-button" data-tab="settings">Settings</button>
+            </div>
+            
+            <div id="messages" class="tab-content active">
+                <div id="messageContainer" class="message" style="display: none;"></div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Subject</th>
+                            <th>Message</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="messagesTable">
+                    </tbody>
+                </table>
+                
+                <div id="replyForm" style="display: none; margin-top: 2rem;">
+                    <h3>Reply to Message</h3>
+                    <form id="messageReplyForm">
+                        <div class="form-group">
+                            <label for="replyTo">To:</label>
+                            <input type="email" id="replyTo" name="replyTo" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="replySubject">Subject:</label>
+                            <input type="text" id="replySubject" name="replySubject" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="replyMessage">Your Response:</label>
+                            <textarea id="replyMessage" name="replyMessage" required></textarea>
+                        </div>
+                        <button type="submit" class="dashboard-button">Send Reply</button>
+                        <button type="button" id="cancelReply" class="dashboard-button" style="background-color: var(--danger); margin-left: 1rem;">Cancel</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div id="appointments" class="tab-content">
+                <div class="message" style="display: none;"></div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3>Upcoming Appointments</h3>
+                    <div>
+                        <label for="appointmentFilter">Filter:</label>
+                        <select id="appointmentFilter" style="margin-left: 0.5rem; padding: 0.5rem;">
+                            <option value="all">All</option>
+                            <option value="pending">Pending</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Customer</th>
+                            <th>Vehicle</th>
+                            <th>Service</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="appointmentsTable">
+                    </tbody>
+                </table>
+            </div>
+            
+            <div id="mechanics" class="tab-content">
+                <div class="week-navigation">
+                    <button id="prevWeek" class="dashboard-button">
+                        <i class="fas fa-chevron-left"></i> Previous Week
+                    </button>
+                    <span id="currentWeekDisplay">Week of ...</span>
+                    <button id="nextWeek" class="dashboard-button">
+                        Next Week <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                
+                <div style="margin: 1rem 0;">
+        	  <label for="mechanicSelect">Select Mechanic:</label>
+        	  <select id="mechanicSelect" style="margin-left: 0.5rem; padding: 0.5rem;">
+            	  	<option value="all">All Mechanics</option>
+            	  	<option value="1">Rahul Kumar</option>
+            	  	<option value="2">Sara Ali</option>
+            	  	<option value="3">Eshwar Lal</option>
+            	  	<option value="4">Priya Patel</option>
+        	  </select>
+        <button id="refreshSchedule" class="dashboard-button" style="margin-left: 1rem;">
+            <i class="fas fa-sync-alt"></i> Refresh
+        </button>
+    </div>
+                
+                <div style="overflow-x: auto;">
+                    <table id="mechanicsScheduleTable">
+                        <thead>
+                            <tr>
+                                <th>Mechanic</th>
+                                <th>Monday</th>
+                                <th>Tuesday</th>
+                                <th>Wednesday</th>
+                                <th>Thursday</th>
+                                <th>Friday</th>
+                                <th>Saturday</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mechanicsScheduleBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div id="settings" class="tab-content">
+                <h3>Admin Settings</h3>
+                
+                <div class="message" style="display: none;"></div>
+                
+                <form id="adminSettingsForm">
+                    <div class="form-group">
+                        <label for="adminEmail">Admin Email:</label>
+                        <input type="email" id="adminEmail" name="adminEmail" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="currentPassword">Current Password:</label>
+                        <input type="password" id="currentPassword" name="currentPassword">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="newPassword">New Password:</label>
+                        <input type="password" id="newPassword" name="newPassword">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm New Password:</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword">
+                    </div>
+                    
+                    <button type="submit" class="dashboard-button">Save Changes</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <div id="mechanicModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Assign Mechanic</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <form id="assignMechanicForm">
+                <input type="hidden" id="appointmentId">
+                <div class="form-group">
+                    <label for="selectedMechanic">Select Mechanic:</label>
+                    <select id="selectedMechanic" class="form-control" required>
+                        <option value="">-- Select Mechanic --</option>
+                        <option value="1">Rahul Kumar</option>
+                        <option value="2">Sara Ali</option>
+                        <option value="3">Eshwar Lal</option>
+                        <option value="4">Priya Patel</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="cancelAssign" class="dashboard-button" style="background-color: var(--danger);">Cancel</button>
+                    <button type="submit" class="dashboard-button">Confirm Assignment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Opening Hours</h4>
+                <p>Mon-Fri: 9am - 6pm</p>
+                <p>Sat: By Appointment only</p>
+                <p>Sun: Closed</p>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>22 Grand Street</p>
+                <p>City Centre, B6 4AB</p>
+                <p>07117 345678</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <a href="booking.html">Book Online</a>
+                <a href="services.html">Our Services</a>
+                <a href="contact.html">Contact Us</a>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2024 City Centre Vehicle Garage. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userData = localStorage.getItem('garageUser');
+            if (!userData) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const user = JSON.parse(userData);
+            if (user.role !== 'admin') {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            document.getElementById('adminName').textContent = `Logged in as: ${user.name}`;
+            document.getElementById('adminEmail').value = user.username + '@citycentregarage.com';
+
+            let currentScheduleWeekStart = getStartOfWeek(new Date());
+            updateWeekDisplay(currentScheduleWeekStart);
+            loadMechanicsSchedule(currentScheduleWeekStart);
+
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+
+                    if (tabId === 'mechanics') {
+                        loadMechanicsSchedule(currentScheduleWeekStart);
+                    }
+                });
+            });
+
+            document.getElementById('logout').addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('garageUser');
+                window.location.href = 'login.html';
+            });
+
+            loadDashboardData();
+
+            document.getElementById('prevWeek').addEventListener('click', function() {
+                currentScheduleWeekStart.setDate(currentScheduleWeekStart.getDate() - 7);
+                updateWeekDisplay(currentScheduleWeekStart);
+                loadMechanicsSchedule(currentScheduleWeekStart);
+            });
+
+            document.getElementById('nextWeek').addEventListener('click', function() {
+                currentScheduleWeekStart.setDate(currentScheduleWeekStart.getDate() + 7);
+                updateWeekDisplay(currentScheduleWeekStart);
+                loadMechanicsSchedule(currentScheduleWeekStart);
+            });
+
+            document.getElementById('mechanicSelect').addEventListener('change', function() {
+                loadMechanicsSchedule(currentScheduleWeekStart);
+            });
+
+            document.getElementById('refreshSchedule').addEventListener('click', function() {
+                loadMechanicsSchedule(currentScheduleWeekStart);
+                showMessage('Schedule refreshed!', 'success');
+            });
+
+            const mechanicModal = document.getElementById('mechanicModal');
+            const closeModal = document.querySelector('.close-modal');
+            const cancelAssign = document.getElementById('cancelAssign');
+
+            closeModal.addEventListener('click', function() {
+                mechanicModal.style.display = 'none';
+            });
+
+            cancelAssign.addEventListener('click', function() {
+                mechanicModal.style.display = 'none';
+            });
+
+            window.addEventListener('click', function(event) {
+                if (event.target === mechanicModal) {
+                    mechanicModal.style.display = 'none';
+                }
+            });
+
+            function getStartOfWeek(date) {
+                const d = new Date(date);
+                const day = d.getDay();
+                const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+                return new Date(d.setDate(diff));
+            }
+
+            function updateWeekDisplay(startDate) {
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                document.getElementById('currentWeekDisplay').textContent = 
+                    `Week of ${startDate.toLocaleDateString('en-US', options)}`;
+            }
+
+            function loadDashboardData() {
+                const messages = JSON.parse(localStorage.getItem('garageMessages')) || [];
+                const messagesTable = document.getElementById('messagesTable');
+                messagesTable.innerHTML = '';
+                
+                messages.forEach((msg, index) => {
+                    const row = document.createElement('tr');
+                    row.setAttribute('data-index', index);
+                    row.innerHTML = `
+                        <td>${new Date(msg.date).toLocaleDateString()}</td>
+                        <td>${msg.name}</td>
+                        <td>${msg.email}</td>
+                        <td>${msg.subject}</td>
+                        <td>${msg.message.substring(0, 30)}...</td>
+                        <td class="status-${msg.status}">${msg.status.charAt(0).toUpperCase() + msg.status.slice(1)}</td>
+                        <td><button class="action-button reply-btn">${msg.status === 'pending' ? 'Reply' : 'View'}</button></td>
+                    `;
+                    messagesTable.appendChild(row);
+                });
+                
+                const appointments = JSON.parse(localStorage.getItem('garageAppointments')) || [];
+                const appointmentsTable = document.getElementById('appointmentsTable');
+                appointmentsTable.innerHTML = '';
+                
+                appointments.forEach(appt => {
+                    const row = document.createElement('tr');
+                    row.setAttribute('data-id', appt.id);
+                    row.innerHTML = `
+                        <td>${new Date(appt.date).toLocaleDateString()}</td>
+                        <td>${appt.time}</td>
+                        <td>${appt.customerName}</td>
+                        <td>${appt.vehicleMake} (${appt.vehicleType})</td>
+                        <td>${appt.service}</td>
+                        <td class="status-${appt.status}">${appt.status.charAt(0).toUpperCase() + appt.status.slice(1)}</td>
+                        <td>
+                            ${appt.status === 'pending' ? 
+                                '<button class="action-button confirm-btn">Confirm</button>' : ''}
+                            <button class="action-button cancel-btn">Cancel</button>
+                        </td>
+                    `;
+                    appointmentsTable.appendChild(row);
+                });
+                
+                updateStats();
+            }
+
+            function loadMechanicsSchedule(startDate) {
+                const scheduleData = JSON.parse(localStorage.getItem('garageSchedule')) || {};
+                const adminData = JSON.parse(localStorage.getItem('garageAdminData')) || { mechanics: {} };
+                const appointments = JSON.parse(localStorage.getItem('garageAppointments')) || [];
+                
+                const selectedMechanic = document.getElementById('mechanicSelect').value;
+               const mechanics = {
+                '1': 'Rahul Kumar',
+                '2': 'Sara Ali', 
+                '3': 'Eshwar Lal',
+                '4': 'Priya Patel'
+            };
+
+                const scheduleBody = document.getElementById('mechanicsScheduleBody');
+                scheduleBody.innerHTML = '';
+                
+                const weekDays = [];
+                for (let i = 0; i < 6; i++) {
+                    const dayDate = new Date(startDate);
+                    dayDate.setDate(startDate.getDate() + i);
+                    weekDays.push(dayDate);
+                }
+                
+                const dayHeaders = document.querySelectorAll('#mechanicsScheduleTable th:not(:first-child)');
+                weekDays.forEach((day, index) => {
+                    dayHeaders[index].textContent = `${day.toLocaleDateString('en-US', { weekday: 'short' })} ${day.getDate()}`;
+                });
+                
+                const mechanicsToShow = selectedMechanic === 'all' ? Object.keys(mechanics) : [selectedMechanic];
+                
+                mechanicsToShow.forEach(mechanicId => {
+                    const row = document.createElement('tr');
+                    const nameCell = document.createElement('td');
+                    nameCell.textContent = mechanics[mechanicId];
+                    row.appendChild(nameCell);
+                    
+                    weekDays.forEach(day => {
+                        const dateKey = day.toISOString().split('T')[0];
+                        const dayCell = document.createElement('td');
+                        dayCell.className = 'schedule-day';
+                        
+                        const daySlots = [];
+                        for (let hour = 9; hour < 17; hour++) {
+                            const slotKey = `${dateKey}-${hour}`;
+                            
+                            let slotInfo = null;
+                            
+                            if (scheduleData[slotKey] && scheduleData[slotKey].mechanicId === mechanicId) {
+                                slotInfo = {
+                                    hour: hour,
+                                    status: scheduleData[slotKey].status,
+                                    details: scheduleData[slotKey]
+                                };
+                            } 
+                            else if (adminData.mechanics[mechanicId] && adminData.mechanics[mechanicId].schedule[slotKey]) {
+                                slotInfo = {
+                                    hour: hour,
+                                    status: adminData.mechanics[mechanicId].schedule[slotKey].status,
+                                    details: adminData.mechanics[mechanicId].schedule[slotKey]
+                                };
+                            }
+                            
+                            if (slotInfo) {
+                                daySlots.push(slotInfo);
+                            }
+                        }
+                        
+                        const groupedSlots = [];
+                        if (daySlots.length > 0) {
+                            let currentGroup = {
+                                start: daySlots[0].hour,
+                                end: daySlots[0].hour,
+                                status: daySlots[0].status,
+                                details: daySlots[0].details
+                            };
+                            
+                            for (let i = 1; i < daySlots.length; i++) {
+                                if (daySlots[i].hour === currentGroup.end + 1 && 
+                                    daySlots[i].status === currentGroup.status) {
+                                    currentGroup.end = daySlots[i].hour;
+                                } else {
+                                    groupedSlots.push(currentGroup);
+                                    currentGroup = {
+                                        start: daySlots[i].hour,
+                                        end: daySlots[i].hour,
+                                        status: daySlots[i].status,
+                                        details: daySlots[i].details
+                                    };
+                                }
+                            }
+                            groupedSlots.push(currentGroup);
+                        }
+                        
+                        if (groupedSlots.length === 0) {
+                            dayCell.innerHTML = '<div class="time-slot-info">No availability set</div>';
+                        } else {
+                            groupedSlots.forEach(slot => {
+                                const slotDiv = document.createElement('div');
+                                slotDiv.className = 'time-slot-info';
+                                
+                                const startTime = slot.start < 12 ? `${slot.start}:00am` : 
+                                                slot.start === 12 ? '12:00pm' : 
+                                                `${slot.start - 12}:00pm`;
+                                const endTime = (slot.end + 1) < 12 ? `${slot.end + 1}:00am` : 
+                                              (slot.end + 1) === 12 ? '12:00pm' : 
+                                              `${slot.end + 1 - 12}:00pm`;
+                                
+                                slotDiv.innerHTML = `
+                                    <span class="status-${slot.status}">
+                                        ${startTime}-${endTime}: ${slot.status.charAt(0).toUpperCase() + slot.status.slice(1)}
+                                    </span>
+                                `;
+                                
+                                if (slot.status === 'booked') {
+                                    const appointment = appointments.find(appt => 
+                                        appt.date === dateKey && 
+                                        appt.time === `${slot.start}:00` &&
+                                        appt.mechanicId === mechanicId
+                                    );
+                                    
+                                    if (appointment) {
+                                        slotDiv.innerHTML += `
+                                            <br>Service: ${appointment.service}
+                                            <br>Customer: ${appointment.customerName}
+                                            <br>Vehicle: ${appointment.vehicleMake} (${appointment.vehicleType})
+                                        `;
+                                    } else if (slot.details.service || slot.details.customer) {
+                                        slotDiv.innerHTML += `
+                                            <br>${slot.details.service || 'Service'} 
+                                            <br>${slot.details.customer || 'Customer'}
+                                        `;
+                                    }
+                                } else if (slot.details.notes) {
+                                    slotDiv.innerHTML += `<br>Notes: ${slot.details.notes}`;
+                                }
+                                
+                                dayCell.appendChild(slotDiv);
+                            });
+                        }
+                        
+                        row.appendChild(dayCell);
+                    });
+                    
+                    scheduleBody.appendChild(row);
+                });
+            }
+
+            function updateStats() {
+                const appointments = JSON.parse(localStorage.getItem('garageAppointments')) || [];
+                const messages = JSON.parse(localStorage.getItem('garageMessages')) || [];
+                
+                const pendingAppointments = appointments.filter(a => a.status === 'pending').length;
+                const confirmedAppointments = appointments.filter(a => a.status === 'confirmed').length;
+                const newMessages = messages.filter(m => m.status === 'pending').length;
+                
+                const oneWeekAgo = new Date();
+                oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+                const weeklyRevenue = appointments
+                    .filter(a => new Date(a.date) >= oneWeekAgo && a.status === 'confirmed')
+                    .reduce((sum, a) => sum + (a.price || 0), 0);
+                
+                document.getElementById('pendingAppointments').textContent = pendingAppointments;
+                document.getElementById('confirmedAppointments').textContent = confirmedAppointments;
+                document.getElementById('newMessagesCount').textContent = newMessages;
+                document.getElementById('weeklyRevenue').textContent = `£${weeklyRevenue.toFixed(2)}`;
+            }
+
+            function showMessage(message, type) {
+                const messageContainer = document.querySelector('.tab-content.active .message');
+                messageContainer.textContent = message;
+                messageContainer.className = `message ${type}-message`;
+                messageContainer.style.display = 'block';
+                
+                setTimeout(() => {
+                    messageContainer.style.display = 'none';
+                }, 5000);
+            }
+
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('confirm-btn')) {
+                    const row = e.target.closest('tr');
+                    const apptId = row.getAttribute('data-id');
+                    
+                    document.getElementById('appointmentId').value = apptId;
+                    document.getElementById('mechanicModal').style.display = 'block';
+                }
+                
+                if (e.target.classList.contains('cancel-btn')) {
+                    const row = e.target.closest('tr');
+                    const apptId = row.getAttribute('data-id');
+                    
+                    const appointments = JSON.parse(localStorage.getItem('garageAppointments')) || [];
+                    const appointment = appointments.find(a => a.id === apptId);
+                    if (appointment) {
+                        appointment.status = 'cancelled';
+                        localStorage.setItem('garageAppointments', JSON.stringify(appointments));
+                        
+                        row.cells[5].textContent = 'Cancelled';
+                        row.cells[5].className = 'status-cancelled';
+                        row.cells[6].innerHTML = '';
+                        
+                        updateStats();
+                        showMessage('Appointment cancelled!', 'success');
+                    }
+                }
+                
+                if (e.target.classList.contains('reply-btn')) {
+                    const row = e.target.closest('tr');
+                    const email = row.cells[2].textContent;
+                    const subject = row.cells[3].textContent;
+                    const msgIndex = row.getAttribute('data-index');
+                    
+                    document.getElementById('replyTo').value = email;
+                    document.getElementById('replySubject').value = `Re: ${subject}`;
+                    document.getElementById('replyForm').setAttribute('data-index', msgIndex);
+                    document.getElementById('replyForm').style.display = 'block';
+                }
+            });
+
+            document.getElementById('assignMechanicForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const apptId = document.getElementById('appointmentId').value;
+                const mechanicId = document.getElementById('selectedMechanic').value;
+                const mechanicName = document.querySelector(`#selectedMechanic option[value="${mechanicId}"]`).textContent;
+                
+                const appointments = JSON.parse(localStorage.getItem('garageAppointments')) || [];
+                const appointment = appointments.find(a => a.id === apptId);
+                
+                if (appointment) {
+                    appointment.status = 'confirmed';
+                    appointment.mechanicId = mechanicId;
+                    appointment.mechanicName = mechanicName;
+                    
+                    const scheduleData = JSON.parse(localStorage.getItem('garageSchedule')) || {};
+                    const slotKey = `${appointment.date}-${appointment.time.split(':')[0]}`;
+                    
+                    scheduleData[slotKey] = {
+                        mechanicId: mechanicId,
+                        status: 'booked',
+                        service: appointment.service,
+                        customer: appointment.customerName,
+                        vehicle: `${appointment.vehicleMake} (${appointment.vehicleType})`
+                    };
+                    
+                    localStorage.setItem('garageAppointments', JSON.stringify(appointments));
+                    localStorage.setItem('garageSchedule', JSON.stringify(scheduleData));
+                    
+                    const row = document.querySelector(`#appointmentsTable tr[data-id="${apptId}"]`);
+                    if (row) {
+                        row.cells[5].textContent = 'Confirmed';
+                        row.cells[5].className = 'status-confirmed';
+                        row.cells[6].innerHTML = '<button class="action-button cancel-btn">Cancel</button>';
+                    }
+                    
+                    mechanicModal.style.display = 'none';
+                    this.reset();
+                    
+                    updateStats();
+                    showMessage('Appointment confirmed and mechanic assigned!', 'success');
+                    
+                    loadMechanicsSchedule(currentScheduleWeekStart);
+                }
+            });
+
+            document.getElementById('cancelReply').addEventListener('click', function() {
+                document.getElementById('replyForm').style.display = 'none';
+            });
+
+            document.getElementById('messageReplyForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const msgIndex = document.getElementById('replyForm').getAttribute('data-index');
+                const messages = JSON.parse(localStorage.getItem('garageMessages')) || [];
+                
+                if (messages[msgIndex]) {
+                    messages[msgIndex].status = 'replied';
+                    localStorage.setItem('garageMessages', JSON.stringify(messages));
+                    
+                    const messagesTable = document.getElementById('messagesTable');
+                    const row = messagesTable.querySelector(`tr[data-index="${msgIndex}"]`);
+                    if (row) {
+                        row.cells[5].textContent = 'Replied';
+                        row.cells[5].className = 'status-confirmed';
+                        row.cells[6].innerHTML = '<button class="action-button reply-btn">View</button>';
+                    }
+                    
+                    updateStats();
+                }
+                
+                showMessage('Reply sent successfully!', 'success');
+                this.reset();
+                document.getElementById('replyForm').style.display = 'none';
+            });
+
+            document.getElementById('adminSettingsForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                showMessage('Settings updated successfully!', 'success');
+            });
+
+            document.getElementById('appointmentFilter').addEventListener('change', function() {
+                const filterValue = this.value;
+                const rows = document.querySelectorAll('#appointmentsTable tr');
+                
+                rows.forEach(row => {
+                    if (filterValue === 'all') {
+                        row.style.display = '';
+                    } else {
+                        const statusClass = row.cells[5].className;
+                        if (statusClass.includes(filterValue)) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
